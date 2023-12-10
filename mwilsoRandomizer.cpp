@@ -1,6 +1,11 @@
 #include <iostream>
 #include <chrono>
 #include <string>
+#include <vector>
+#include <cmath>
+#include <stdlib.h>     /* srand, rand */
+
+
 
 using namespace std;
 using namespace chrono;
@@ -43,5 +48,26 @@ double mish_randomizer(int num, int length) {
         saved_key = key;
         random_num.append(to_string(key));
     }
-    return 1.0 / stoi(random_num.substr(0, 9));
+    int offset = rand() % 2;
+    return(pow(10.0, length-offset) / stoi(random_num.substr(0, length)));
+}
+
+int main(int argc, char *argv[]) {
+    // Parse command-line arguments and call your function
+    vector<int> inputVector;
+
+    if (argc > 1) {
+        int true_answer = std::stoi(argv[1]) * 1.0;
+        int epsilon = std::stof(argv[2]);
+
+        string sep = " ";
+        for (int i = 0; i < 200; i++) {
+            cout << (true_answer + mish_randomizer(epsilon, 9)) << sep;
+        }
+
+    } else {
+        std::cout << "Usage: " << argv[0] << " <int_param> <int_param> <vec_param>" << std::endl;
+    }
+
+    return 0;
 }
