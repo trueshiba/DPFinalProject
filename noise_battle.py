@@ -53,6 +53,8 @@ else:  # Mac and Linux case
     p = Popen([f'./a.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
     if debug:
         print(p.stdout.read())
+    mish_answers = p.stdout.read().decode("utf-8").split(" ")
+    mish_answers = [float(a) for a in mish_answers[:-1]]
     os.remove("a.out")
 
 laplace_error = [pct_error(true_answer, a) for a in laplace_answers]
