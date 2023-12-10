@@ -27,7 +27,6 @@ int main(int argc, char *argv[]) {
 
     if (argc > 1) {
         int true_answer = std::stoi(argv[1]) * 1.0;
-        int epsilon = std::stof(argv[2]);
 
         string sep = " ";
         for (int i = 0; i < 200; i++) {
@@ -90,11 +89,9 @@ double randSeq(int upperBound) {
 
     ++cooperIterator;
 
-    cout << "SubSeed: " << subSeed << endl;
 
     auto randNum = static_cast<double>(subSeed % upperBound);
 
-    cout << "randNum: " << randNum << endl;
 
     return (randNum / upperBound);
 }

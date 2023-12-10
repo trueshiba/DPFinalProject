@@ -12,7 +12,7 @@ import os
 from scipy import stats
 import matplotlib.pyplot as plt
 
-debug = False
+debug = True
 
 
 def laplace_mech(v, sensitivity, epsilon):
@@ -50,47 +50,44 @@ except subprocess.CalledProcessError as e:
 if platform.system() == 'Windows':
     # Mish Function call
     p = Popen(f'mishFile.exe {true_answer} {9} {1.0}', shell=True, stdout=PIPE, stdin=PIPE)
-    if debug:
-        print(p.stdout.read())
+
     mish_answers = p.stdout.read().decode("utf-8").split(" ")
     mish_answers = [float(a) for a in mish_answers[:-1]]
     os.remove("mishFile.exe")
 
     # Cooper Function call
-    p = Popen(f'cooperFile.exe {true_answer} {1212}', shell=True, stdout=PIPE, stdin=PIPE)
-    if debug:
-        print(p.stdout.read())
+    p = Popen(f'cooperFile.exe {true_answer}', shell=True, stdout=PIPE, stdin=PIPE)
+
     cooper_answers = p.stdout.read().decode("utf-8").split(" ")
-    cooper_answers = [float(a) for a in mish_answers[:-1]]
+    cooper_answers = [float(a) for a in cooper_answers[:-1]]
     os.remove("cooperFile.exe")
 
     p = Popen(f'alisonFile.exe {true_answer} {1000}', shell=True, stdout=PIPE, stdin=PIPE)
-    if debug:
-        print(p.stdout.read())
+
     alison_answers = p.stdout.read().decode("utf-8").split(" ")
-    alison_answers = [float(a) for a in mish_answers[:-1]]
+    alison_answers = [float(a) for a in alison_answers[:-1]]
     os.remove("alisonFile.exe")
 
 else:  # Mac and Linux case
-    p = Popen([f'./mishFile.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
+    p = Popen([f'./mishFile.out {true_answer} {9} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
     if debug:
         print(p.stdout.read())
     mish_answers = p.stdout.read().decode("utf-8").split(" ")
     mish_answers = [float(a) for a in mish_answers[:-1]]
     os.remove("mishFile.out")
 
-    p = Popen([f'./cooperFile.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
+    p = Popen([f'./cooperFile.out {true_answer}'], shell=True, stdout=PIPE, stdin=PIPE)
     if debug:
         print(p.stdout.read())
     cooper_answers = p.stdout.read().decode("utf-8").split(" ")
-    cooper_answers = [float(a) for a in mish_answers[:-1]]
+    cooper_answers = [float(a) for a in cooper_answers[:-1]]
     os.remove("cooperFile.out")
 
-    p = Popen([f'./alisonFile.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
+    p = Popen([f'./alisonFile.out {true_answer} {1000}'], shell=True, stdout=PIPE, stdin=PIPE)
     if debug:
         print(p.stdout.read())
     alison_answers = p.stdout.read().decode("utf-8").split(" ")
-    alison_answers = [float(a) for a in mish_answers[:-1]]
+    alison_answers = [float(a) for a in alison_answers[:-1]]
     os.remove("alisonFile.out")
 
 laplace_error = [pct_error(true_answer, a) for a in laplace_answers]
@@ -98,9 +95,18 @@ mish_error = [pct_error(true_answer, a) for a in mish_answers]
 cooper_error = [pct_error(true_answer, a) for a in cooper_answers]
 alison_error = [pct_error(true_answer, a) for a in alison_answers]
 
-_, bins, _ = plt.hist(laplace_error, bins=20, label='Laplace', alpha=0.25)
+plt.subplot(131)
+_, bins, _ = plt.hist(laplace_error, bins=20, label='Laplace')
 plt.hist(mish_error, bins=bins, label='Mish_Random', alpha=0.25)
+plt.legend()
+
+plt.subplot(132)
+_, bins, _ = plt.hist(laplace_error, bins=20, label='Laplace')
 plt.hist(cooper_error, bins=bins, label='Cooper_Random', alpha=0.25)
+plt.legend()
+
+plt.subplot(133)
+_, bins, _ = plt.hist(laplace_error, bins=20, label='Laplace')
 plt.hist(alison_error, bins=bins, label='Alison_Random', alpha=0.25)
 plt.legend()
 
