@@ -76,7 +76,7 @@ else:  # Mac and Linux case
     mish_answers = [float(a) for a in mish_answers[:-1]]
     os.remove("mishFile")
 
-    p = Popen([f'./cooperFile.out {true_answer} {2121}'], shell=True, stdout=PIPE, stdin=PIPE)
+    p = Popen([f'./cooperFile {true_answer} {2121}'], shell=True, stdout=PIPE, stdin=PIPE)
     cooper_answers = p.stdout.read().decode("utf-8").split(" ")
     cooper_answers = [float(a) for a in cooper_answers[:-1]]
     os.remove("cooperFile")
@@ -85,6 +85,8 @@ else:  # Mac and Linux case
     alison_answers = p.stdout.read().decode("utf-8").split(" ")
     alison_answers = [float(a) for a in alison_answers[:-1]]
     os.remove("alisonFile")
+
+
 
 #Calculate error
 laplace_error = [pct_error(true_answer, a) for a in laplace_answers]
