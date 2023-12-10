@@ -13,7 +13,7 @@ int cooperIterator;
 long COOPER_SEED_DEFAULT_VAL = 1178536356;
 double randSeq(int upperBound);
 
-int main() {
+int main(int argc, char *argv[]) {
 
     long pSeed = time(NULL);
     int specialNum = 3239;
@@ -25,7 +25,18 @@ int main() {
 
     int sensitivity = 1212;
 
-    cout << randSeq(sensitivity) << endl;
+    if (argc > 1) {
+        int true_answer = std::stoi(argv[1]) * 1.0;
+        int epsilon = std::stof(argv[2]);
+
+        string sep = " ";
+        for (int i = 0; i < 200; i++) {
+            cout << (true_answer + randSeq(sensitivity)) << sep;
+        }
+
+    } else {
+        std::cout << "Usage: " << argv[0] << " <int_param> <int_param> <vec_param>" << std::endl;
+    }
 
     return 0;
 }
