@@ -31,7 +31,7 @@ float agilRand(int sensitivity) {
     int r2 = ms.count() % r1;
     cout << "r2: " << r2 << endl;
 
-    // Return the average of the two
+    // Return the average of the two (# between 0 and 1)
     float randNum = float(r1 - r2) / float(r1);
 
     return randNum;
