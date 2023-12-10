@@ -23,10 +23,12 @@ int main(int argc, char *argv[]) {
     cooperSeed = abs(pSeed);
     cooperIterator = 1;
 
+    // Default Sensitivity
     int sensitivity = 1212;
 
     if (argc > 1) {
         int true_answer = std::stoi(argv[1]) * 1.0;
+        sensitivity = std::stoi(argv[2]) * 1.0;
 
         string sep = " ";
         for (int i = 0; i < 200; i++) {
