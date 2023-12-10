@@ -13,6 +13,7 @@ float agilRand(int sensitivity);
 
 int main(int argc, char *argv[]) {
     // Parse command-line arguments and call your function
+
     if (argc > 1) {
         int true_answer = std::stoi(argv[1]) * 1.0;
         int sensitivity = std::stof(argv[2]);
