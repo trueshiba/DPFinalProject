@@ -52,7 +52,6 @@ except subprocess.CalledProcessError as e:
 if platform.system() == 'Windows':
     # Mish Function call
     p = Popen(f'mishFile.exe {true_answer} {9} {1.0}', shell=True, stdout=PIPE, stdin=PIPE)
-
     mish_answers = p.stdout.read().decode("utf-8").split(" ")
     mish_answers = [float(a) for a in mish_answers[:-1]]
     os.remove("mishFile.exe")
