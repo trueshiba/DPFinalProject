@@ -50,7 +50,7 @@ if platform.system() == 'Windows':
     print(mish_answers)
     os.remove("a.exe")
 else:  # Mac and Linux case
-    p = Popen(['./a.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
+    p = Popen([f'./a.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
     if debug:
         print(p.stdout.read())
     os.remove("a.out")
