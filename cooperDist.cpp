@@ -4,13 +4,14 @@
 #include <algorithm>
 #include <string>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
 long cooperSeed;
 int cooperIterator;
 long COOPER_SEED_DEFAULT_VAL = 1178536356;
-int randSeq(int upperBound);
+double randSeq(int upperBound);
 
 int main() {
 
@@ -22,13 +23,15 @@ int main() {
     cooperSeed = abs(pSeed);
     cooperIterator = 1;
 
-    cout << randSeq(10) << endl;
+    int sensitivity = 1212;
+
+    cout << randSeq(sensitivity) << endl;
 
     return 0;
 }
 
 
-int randSeq(int upperBound) {
+double randSeq(int upperBound) {
     int final, subSeed;
     int begin = 0;
     int specialNum = 3239;
@@ -76,6 +79,12 @@ int randSeq(int upperBound) {
 
     ++cooperIterator;
 
-    return subSeed % upperBound;
+    cout << "SubSeed: " << subSeed << endl;
+
+    auto randNum = static_cast<double>(subSeed % upperBound);
+
+    cout << "randNum: " << randNum << endl;
+
+    return (randNum / upperBound);
 }
 // end of Cooper sort functions
