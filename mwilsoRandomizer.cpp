@@ -58,11 +58,12 @@ int main(int argc, char *argv[]) {
 
     if (argc > 1) {
         int true_answer = std::stoi(argv[1]) * 1.0;
-        int epsilon = std::stof(argv[2]);
+        int sensitivity = std::stof(argv[2]);
+        int epsilon = std::stof(argv[3]);
 
         string sep = " ";
         for (int i = 0; i < 200; i++) {
-            cout << (true_answer + mish_randomizer(epsilon, 9)) << sep;
+            cout << (true_answer + mish_randomizer(epsilon, sensitivity)) << sep;
         }
 
     } else {

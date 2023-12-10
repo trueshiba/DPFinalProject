@@ -34,34 +34,74 @@ laplace_answers = [laplace_mech(true_answer, 1, 1) for _ in range(200)]
 
 # Mish Function call
 mish_answers = []
+cooper_answers = []
+alison_answers = []
 try:
-    subprocess.check_output("g++ -std=c++1y mwilsoRandomizer.cpp", stdin=None, stderr=subprocess.STDOUT, shell=True)
+    subprocess.check_output("g++ mwilsoRandomizer.cpp -o mishFile", stdin=None, stderr=subprocess.STDOUT, shell=True)
+    subprocess.check_output("g++ cooperDist.cpp -o cooperFile", stdin=None, stderr=subprocess.STDOUT, shell=True)
+    subprocess.check_output("g++ agilRandomizer.cpp -o alisonFile", stdin=None, stderr=subprocess.STDOUT, shell=True)
+
+
 except subprocess.CalledProcessError as e:
     print("<p>", e.output, "</p>")
     raise SystemExit
 
 # Depending on your OS, different executable files will be produced. Run the executable.
 if platform.system() == 'Windows':
-    p = Popen(f'a.exe {true_answer} {1.0}', shell=True, stdout=PIPE, stdin=PIPE)
+    # Mish Function call
+    p = Popen(f'mishFile.exe {true_answer} {9} {1.0}', shell=True, stdout=PIPE, stdin=PIPE)
     if debug:
         print(p.stdout.read())
     mish_answers = p.stdout.read().decode("utf-8").split(" ")
     mish_answers = [float(a) for a in mish_answers[:-1]]
-    print(mish_answers)
-    os.remove("a.exe")
+    os.remove("mishFile.exe")
+
+    # Cooper Function call
+    p = Popen(f'cooperFile.exe {true_answer} {1212}', shell=True, stdout=PIPE, stdin=PIPE)
+    if debug:
+        print(p.stdout.read())
+    cooper_answers = p.stdout.read().decode("utf-8").split(" ")
+    cooper_answers = [float(a) for a in mish_answers[:-1]]
+    os.remove("cooperFile.exe")
+
+    p = Popen(f'alisonFile.exe {true_answer} {1000}', shell=True, stdout=PIPE, stdin=PIPE)
+    if debug:
+        print(p.stdout.read())
+    alison_answers = p.stdout.read().decode("utf-8").split(" ")
+    alison_answers = [float(a) for a in mish_answers[:-1]]
+    os.remove("alisonFile.exe")
+
 else:  # Mac and Linux case
-    p = Popen([f'./a.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
+    p = Popen([f'./mishFile.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
     if debug:
         print(p.stdout.read())
     mish_answers = p.stdout.read().decode("utf-8").split(" ")
     mish_answers = [float(a) for a in mish_answers[:-1]]
-    os.remove("a.out")
+    os.remove("mishFile.out")
+
+    p = Popen([f'./cooperFile.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
+    if debug:
+        print(p.stdout.read())
+    cooper_answers = p.stdout.read().decode("utf-8").split(" ")
+    cooper_answers = [float(a) for a in mish_answers[:-1]]
+    os.remove("cooperFile.out")
+
+    p = Popen([f'./alisonFile.out {true_answer} {1.0}'], shell=True, stdout=PIPE, stdin=PIPE)
+    if debug:
+        print(p.stdout.read())
+    alison_answers = p.stdout.read().decode("utf-8").split(" ")
+    alison_answers = [float(a) for a in mish_answers[:-1]]
+    os.remove("alisonFile.out")
 
 laplace_error = [pct_error(true_answer, a) for a in laplace_answers]
 mish_error = [pct_error(true_answer, a) for a in mish_answers]
+cooper_error = [pct_error(true_answer, a) for a in cooper_answers]
+alison_error = [pct_error(true_answer, a) for a in alison_answers]
 
-_, bins, _ = plt.hist(laplace_error, bins=20, label='Laplace')
-plt.hist(mish_error, bins=bins, label='Mish_Random', alpha=0.5)
+_, bins, _ = plt.hist(laplace_error, bins=20, label='Laplace', alpha=0.25)
+plt.hist(mish_error, bins=bins, label='Mish_Random', alpha=0.25)
+plt.hist(cooper_error, bins=bins, label='Cooper_Random', alpha=0.25)
+plt.hist(alison_error, bins=bins, label='Alison_Random', alpha=0.25)
 plt.legend()
 
 plt.show()

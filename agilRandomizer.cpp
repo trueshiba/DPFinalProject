@@ -10,10 +10,23 @@ using namespace std::chrono;
 
 float agilRand(int sensitivity);
 
-int main() {
-    int sensitivity = 1000;
 
-    std::cout << agilRand(sensitivity) << std::endl;
+int main(int argc, char *argv[]) {
+    // Parse command-line arguments and call your function
+    vector<int> inputVector;
+
+    if (argc > 1) {
+        int true_answer = std::stoi(argv[1]) * 1.0;
+        int sensitivity = std::stof(argv[2]);
+
+        string sep = " ";
+        for (int i = 0; i < 200; i++) {
+            cout << (true_answer + agilRand(sensitivity)) << sep;
+        }
+
+    } else {
+        std::cout << "Usage: " << argv[0] << " <int_param> <int_param> <vec_param>" << std::endl;
+    }
 
     return 0;
 }
